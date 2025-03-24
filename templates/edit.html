@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Edytuj Film</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <div class="container admin-container">
+    <div class="card shadow-sm">
+      <div class="card-header">
+        <h1 class="mb-0">Edytuj Film</h1>
+      </div>
+      <div class="card-body">
+        <form method="POST">
+          <div class="mb-3">
+            <label for="polish_title" class="form-label">Tytuł Po Polsku:</label>
+            <input type="text" id="polish_title" name="polish_title" class="form-control" value="{{ movie['polish_title'] }}" required>
+          </div>
+          <div class="mb-3">
+            <label for="original_title" class="form-label">Tytuł Oryginalny:</label>
+            <input type="text" id="original_title" name="original_title" class="form-control" value="{{ movie['original_title'] }}" required>
+          </div>
+          <div class="mb-3">
+            <label for="watched_date" class="form-label">Data Obejrzenia:</label>
+            <input type="date" id="watched_date" name="watched_date" class="form-control" value="{{ movie['watched_date'] }}">
+          </div>
+          <div class="mb-3">
+            <label for="rating" class="form-label">Ocena (1-10):</label>
+            <input type="number" id="rating" name="rating" class="form-control" value="{{ movie['rating'] }}" min="1" max="10" required>
+          </div>
+          <div class="mb-3">
+            <label for="release_year" class="form-label">Rok Premiery:</label>
+            <input type="number" id="release_year" name="release_year" class="form-control" value="{{ movie['release_year'][:4] }}" placeholder="YYYY" min="1900" max="2100">
+          </div>
+          <div class="d-grid">
+            <button type="submit" class="btn btn-success">Zapisz Zmiany</button>
+          </div>
+        </form>
+        <div class="text-center btn-success mt-3">
+          <a href="{{ url_for('index') }}">Powrót do strony głównej</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dodanie ukrytej tabeli dla funkcji JavaScript -->
+  <table class="table table-light d-none">
+    <!-- Pusta tabela potrzebna dla skryptu updateTableThemes() -->
+  </table>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+  <script>
+    // Sprawdzenie trybu ciemnego w localStorage i zastosowanie przed renderowaniem strony
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      document.documentElement.classList.add('dark-mode');
+      // Dodanie klasy dark-mode do body natychmiast przed renderowaniem
+      document.addEventListener('DOMContentLoaded', function() {
+        document.body.classList.add('dark-mode');
+        // Natychmiastowa aktualizacja kolorów
+        updateColors('dark');
+        updateTableThemes('dark');
+      });
+    } else {
+      document.addEventListener('DOMContentLoaded', function() {
+        // Natychmiastowa aktualizacja kolorów dla trybu jasnego
+        updateColors('light');
+        updateTableThemes('light');
+      });
+    }
+  </script>
+</body>
+</html>
