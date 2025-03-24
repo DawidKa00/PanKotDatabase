@@ -1,101 +1,97 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Lista Filmów - PanKot</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lista Filmów - PanKot</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
 </head>
 <body>
-  <div class="container py-5">
+<div class="container py-5">
     <div class="d-flex justify-content-end mb-3">
-      <button class="btn btn-outline-secondary" id="toggle-dark-mode">
-        <i class="bi bi-moon-fill"></i> Tryb Ciemny
-      </button>
+        <button class="btn btn-outline-secondary" id="toggle-dark-mode">
+            <i class="bi bi-moon-fill"></i>
+        </button>
     </div>
     <div class="d-flex justify-content-between align-items-center mb-3">
-    <h1 id="title">Lista Filmów</h1>
-
-    {% if session['user'] %}
-        <div>
-          <span class="me-2 user-text" id="user-text">Witaj, {{ session['user'].split("@")[0] }}!</span>
-          <a href="{{ url_for('logout') }}" class="btn btn-sm btn-outline-secondary">Wyloguj</a>
-        </div>
+        <h1 id="title">Lista Filmów</h1>
+        {% if session['user'] %}
+            <div>
+                <span class="me-2 user-text" id="user-text">Witaj, {{ session['user'].split("@")[0] }}!</span>
+                <a href="{{ url_for('logout') }}" class="btn btn-sm btn-outline-secondary">Wyloguj</a>
+            </div>
         {% else %}
-        <a href="{{ url_for('login') }}" class="btn btn-sm btn-primary">Zaloguj się</a>
+            <a href="{{ url_for('login') }}" class="btn btn-sm btn-primary">Zaloguj się</a>
         {% endif %}
     </div>
     <div class="table-responsive">
-      <table class="table" id="movies-table">
-        <thead>
-          <tr>
-            <th>Tytuł Po Polsku</th>
-            <th>Tytuł Oryginalny</th>
-            <th>Data Obejrzenia</th>
-            <th>Ocena</th>
-            <th>Rok Premiery</th>
-            <th>Kto Dodał</th>
-            {% if session.get('user') %}
-              <th></th>
-            {% endif %}
-          </tr>
-        </thead>
-        <tbody>
-          {% for movie in movies %}
-          <tr>
-            <td>{{ movie["polish_title"] }}</td>
-            <td>{{ movie["original_title"] }}</td>
-            <td>{{ movie["watched_date"] }}</td>
-            <td>{{ movie["rating"] }}</td>
-            <td>{{ movie["release_year"][:4] if movie["release_year"] else '' }}</td>
-            <td>{{ movie["who_submitted"] }}</td>
-            {% if session.get('user') %}
-            <td>
-              <a href="{{ url_for('edit', movie_id=movie['id']) }}" class="btn btn-warning btn-sm">
-                <i class="bi bi-pencil-fill"></i>
-              </a>
-
-              <form action="{{ url_for('delete', movie_id=movie['id']) }}" method="POST" style="display:inline;">
-                <button type="submit" class="btn btn-danger btn-sm">
-                  <i class="bi bi-trash-fill"></i>
-                </button>
-              </form>
-            </td>
-            {% endif %}
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+        <table class="table" id="movies-table">
+            <thead>
+            <tr>
+                <th>Tytuł Po Polsku</th>
+                <th>Tytuł Oryginalny</th>
+                <th>Data Obejrzenia</th>
+                <th>Ocena</th>
+                <th>Rok Premiery</th>
+                <th>Kto Dodał</th>
+                {% if session.get('user') %}
+                    <th></th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for movie in movies %}
+                <tr>
+                    <td>{{ movie["polish_title"] }}</td>
+                    <td>{{ movie["original_title"] }}</td>
+                    <td>{{ movie["watched_date"] }}</td>
+                    <td>{{ movie["rating"] }}</td>
+                    <td>{{ movie["release_year"][:4] if movie["release_year"] else '' }}</td>
+                    <td>{{ movie["who_submitted"] }}</td>
+                    {% if session.get('user') %}
+                        <td>
+                            <a href="{{ url_for('edit', movie_id=movie['id']) }}" class="btn btn-warning btn-sm">
+                                <i class="bi bi-pencil-fill"></i>
+                            </a>
+                            <form action="{{ url_for('delete', movie_id=movie['id']) }}" method="POST"
+                                  style="display:inline;">
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="bi bi-trash-fill"></i>
+                                </button>
+                            </form>
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
-
     {% if session['user'] %}
         <a href="{{ url_for('admin') }}" class="btn btn-success mt-3">Dodaj nowy film</a>
     {% endif %}
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="{{ url_for('static', filename='script.js') }}"></script>
-    <script>
-  // Sprawdzenie trybu ciemnego w localStorage i zastosowanie przed renderowaniem strony
-  const savedTheme = localStorage.getItem('theme');
-  if (savedTheme === 'dark') {
-    document.documentElement.classList.add('dark-mode');
-    // Dodanie klasy dark-mode do body natychmiast przed renderowaniem
-    document.addEventListener('DOMContentLoaded', function() {
-      document.body.classList.add('dark-mode');
-      // Natychmiastowa aktualizacja kolorów
-      updateColors('dark');
-      updateTableThemes('dark');
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.classList.toggle('dark-mode', savedTheme === 'dark');
+        document.body.classList.toggle('dark-mode', savedTheme === 'dark');
+        updateColors(savedTheme);
+        updateTableThemes(savedTheme);
+        $('#movies-table').DataTable({
+            order: [],
+            language: {
+                url: 'https://cdn.datatables.net/plug-ins/2.2.2/i18n/pl.json',
+            }
+        });
     });
-  } else {
-    document.addEventListener('DOMContentLoaded', function() {
-      // Natychmiastowa aktualizacja kolorów dla trybu jasnego
-      updateColors('light');
-      updateTableThemes('light');
-    });
-  }
 </script>
 </body>
 </html>

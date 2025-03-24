@@ -1,99 +1,93 @@
-/* Zmienna do trybu ciemnego */
 :root {
-  --bg-color: #f8f9fa;
-  --text-color: #212529;
-  --card-bg: #ffffff;
-  --card-border: #dee2e6;
+    --bg-color: #f8f9fa;
+    --text-color: #212529;
+    --card-bg: #ffffff;
+    --card-border: #dee2e6;
 }
 
-/* Tryb ciemny */
 body.dark-mode {
-  --bg-color: #343a40;
-  --text-color: #ffffff;
-  --card-bg: #495057;
-  --card-border: #6c757d;
+    --bg-color: #343a40;
+    --text-color: #ffffff;
+    --card-bg: #495057;
+    --card-border: #6c757d;
 }
 
 body {
-  background-color: var(--bg-color);
-  color: var(--text-color);
+    background-color: var(--bg-color);
+    color: var(--text-color);
 }
 
 .login-body {
-  background-color: #343a40;
+    background-color: #343a40;
 }
 
 .login-body.container {
-  background-color: #484f55;
+    background-color: #484f55;
 }
 
 .card {
-  background-color: var(--card-bg);
-  border: 1px solid var(--card-border);
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
 }
 
 .btn {
-  transition: all 0.3s;
+    transition: all 0.3s;
 }
 
 .btn-light {
-  background-color: #e9ecef;
-  border: 1px solid #ced4da;
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
 }
 
 .btn-dark {
-  background-color: #343a40;
-  border: 1px solid #495057;
+    background-color: #343a40;
+    border: 1px solid #495057;
 }
 
 .table-dark, .table-dark td, .table-dark th {
-  background-color: var(--card-bg) !important;
-  color: var(--text-color) !important;
+    background-color: var(--card-bg) !important;
+    color: var(--text-color) !important;
 }
 
-/* Styl do przycisku ciemnego/jasnego */
 #toggle-dark-mode {
-  transition: all 1s;
+    transition: all 1s;
 }
 
 .user-text {
-  color: var(--text-color);
+    color: var(--text-color);
 }
 
 body.dark-mode .user-text {
-  color: #ffffff;
+    color: #ffffff;
 }
 
-/* Domyślne ustawienia dla tekstu w trybie jasnym */
 .user-text {
-  color: #ffffff;  /* Czarny w trybie jasnym */
+    color: #ffffff;
 }
 
 .login-body {
-  background-color: #212529;
+    background-color: #212529;
 }
 
 .login-container .card {
-  background-color: #343a40 /* Ciemniejsze tło karty dla trybu jasnego */
+    background-color: #343a40;
 }
 
 .login-container {
-  max-width: 400px;
-  margin: 100px auto;
+    max-width: 400px;
+    margin: 100px auto;
 }
 
 .admin-container {
-  max-width: 500px;
-  margin: 50px auto;
+    max-width: 500px;
+    margin: 50px auto;
 }
-
 
 body.dark-mode .admin-container .card {
-  background-color: #343a40; /* Ciemniejsze tło karty dla trybu ciemnego */
-  color: #ffffff;
+    background-color: #343a40;
+    color: #ffffff;
 }
 
-/* Styl przycisku trybu ciemnego */
 #toggle-dark-mode {
-  transition: all 0.3s;
+    transition: all 0.3s;
 }
