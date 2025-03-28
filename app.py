@@ -3,7 +3,8 @@ from dotenv import load_dotenv
 import supabase
 import os
 from datetime import datetime
-from setuptools_scm import get_version
+
+from gotrue.errors import AuthError, AuthApiError
 
 load_dotenv()
 
@@ -40,12 +41,18 @@ def index():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    response = None
     if request.method == "POST":
         email, password = request.form["email"], request.form["password"]
-        response = sb.auth.sign_in_with_password({"email": email, "password": password})
-        if response.user:
-            session["user"] = response.user.email
-            return redirect(url_for("index"))
+        try:
+            response = sb.auth.sign_in_with_password({"email": email, "password": password})
+        except AuthApiError as auth_exception:
+            print(auth_exception)
+            return render_template("login.html", error="Nieprawidłowe dane logowania")
+        finally:
+            if response and hasattr(response, "user"):
+                session["user"] = response.user.email
+                return redirect(url_for("index"))
     return render_template("login.html")
 
 
