@@ -69,13 +69,17 @@ def admin():
 
     today_date = datetime.today().strftime('%Y-%m-%d')
     if request.method == "POST":
+        rating = request.form["rating"] if request.form["rating"] else None
+
         release_year = request.form.get("release_year")
         release_year = f"{release_year}-01-01" if release_year else None
+
+        watched_date = request.form.get("watched_date") if request.form.get("watched_date") else None
         data = {
             "polish_title": request.form["polish_title"],
             "original_title": request.form["original_title"],
-            "watched_date": request.form["watched_date"],
-            "rating": request.form["rating"],
+            "watched_date": watched_date,
+            "rating": rating,
             "release_year": release_year,
             "who_submitted": session["user"].split("@")[0]
         }

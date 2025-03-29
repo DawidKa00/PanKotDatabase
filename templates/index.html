@@ -46,12 +46,12 @@
             <tbody>
             {% for movie in movies %}
                 <tr>
-                    <td>{{ movie["polish_title"] }}</td>
-                    <td>{{ movie["original_title"] }}</td>
-                    <td>{{ movie["watched_date"] }}</td>
-                    <td>{{ movie["rating"] }}</td>
+                    <td>{{ movie["polish_title"] if movie["polish_title"] else ''}}</td>
+                    <td>{{ movie["original_title"] if movie["original_title"] else ''}}</td>
+                    <td>{{ movie["watched_date"] if movie["watched_date"] else ''}}</td>
+                    <td>{{ movie["rating"] if movie["rating"] else ''}}</td>
                     <td>{{ movie["release_year"][:4] if movie["release_year"] else '' }}</td>
-                    <td>{{ movie["who_submitted"] }}</td>
+                    <td>{{ movie["who_submitted"] if movie["who_submitted"] else ''}}</td>
                     {% if session.get('user') %}
                         <td>
                             <a href="{{ url_for('edit', movie_id=movie['id']) }}" class="btn btn-warning btn-sm">
